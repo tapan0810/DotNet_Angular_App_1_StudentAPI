@@ -21,16 +21,13 @@ export class StudentService {
     getStudent(id: number): Observable<Student> {
         return this.http.get<Student>(`${this.api}/${id}`);
     }
+    
     createStudent(student: Student) {
-
         return this.http.post<Student>(this.api, student);
-
     }
 
     deleteStudent(id: number) {
-
         return this.http.delete(`${this.api}/${id}`);
-
     }
 
 
