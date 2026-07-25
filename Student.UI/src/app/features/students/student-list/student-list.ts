@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  inject,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -32,10 +40,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   templateUrl: './student-list.html',
   styleUrl: './student-list.css'
 })
-export class StudentList implements OnInit {
+export class StudentList implements OnInit, AfterViewInit {
 
   private studentService = inject(StudentService);
   private snackBar = inject(MatSnackBar);
+  private cdr = inject(ChangeDetectorRef);
+
 
   displayedColumns: string[] = [
     'id',
@@ -59,41 +69,52 @@ export class StudentList implements OnInit {
     this.loadStudents();
   }
 
-  loadStudents() {
-
-    this.studentService.getStudents().subscribe({
-
-      next: (students) => {
-
-        this.dataSource.data = students;
-
-        this.dataSource.paginator = this.paginator;
-
-        this.dataSource.sort = this.sort;
-
-        this.loading = false;
-
-      },
-
-      error: () => {
-
-        this.loading = false;
-
-        this.snackBar.open(
-          'Failed to load students.',
-          'Close',
-          {
-            duration: 3000
-          }
-        );
-
-      }
-
-    });
-
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  search(event: Event) {
+  loadStudents(): void {
+
+  this.loading = true;
+
+  this.studentService.getStudents().subscribe({
+
+    next: (students) => {
+
+      console.log('Students received:', students);
+
+      this.dataSource.data = students;
+
+      this.loading = false;
+
+      this.cdr.detectChanges();
+
+    },
+
+    error: (err) => {
+
+      console.error(err);
+
+      this.loading = false;
+
+      this.cdr.detectChanges();
+
+      this.snackBar.open(
+        'Failed to load students.',
+        'Close',
+        {
+          duration: 3000
+        }
+      );
+
+    }
+
+  });
+
+}
+
+  search(event: Event): void {
 
     const filter = (event.target as HTMLInputElement).value;
 
@@ -101,12 +122,10 @@ export class StudentList implements OnInit {
 
   }
 
-  deleteStudent(id: number) {
+  deleteStudent(id: number): void {
 
     if (!confirm('Delete this student?')) {
-
       return;
-
     }
 
     this.studentService.deleteStudent(id).subscribe({
@@ -122,6 +141,18 @@ export class StudentList implements OnInit {
         );
 
         this.loadStudents();
+
+      },
+
+      error: () => {
+
+        this.snackBar.open(
+          'Unable to delete student.',
+          'Close',
+          {
+            duration: 3000
+          }
+        );
 
       }
 

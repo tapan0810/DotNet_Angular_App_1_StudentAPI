@@ -1,1 +1,82 @@
-<p>student-details works!</p>
+@if(loading){
+
+<div class="loader">
+
+    <mat-spinner></mat-spinner>
+
+</div>
+
+}
+
+@else{
+
+@if(student){
+
+<mat-card class="student-card">
+
+    <mat-card-header>
+
+        <mat-card-title>
+
+            Student Details
+
+        </mat-card-title>
+
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <div class="row">
+
+            <span class="label">ID</span>
+
+            <span>{{student.id}}</span>
+
+        </div>
+
+        <div class="row">
+
+            <span class="label">Name</span>
+
+            <span>{{student.name}}</span>
+
+        </div>
+
+        <div class="row">
+
+            <span class="label">Age</span>
+
+            <span>{{student.age}}</span>
+
+        </div>
+
+        <div class="row">
+
+            <span class="label">Email</span>
+
+            <span>{{student.email}}</span>
+
+        </div>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="goBack()">
+
+            <mat-icon>arrow_back</mat-icon>
+
+            Back
+
+        </button>
+
+    </mat-card-actions>
+
+</mat-card>
+
+}
+
+}

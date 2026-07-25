@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 
 export class StudentService {
 
-    private api = env.apiUrl + '/Students';
+    private api = 'http://localhost:5091/api/Student';
 
     constructor(private http: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class StudentService {
     getStudent(id: number): Observable<Student> {
         return this.http.get<Student>(`${this.api}/${id}`);
     }
-    
+
     createStudent(student: Student) {
         return this.http.post<Student>(this.api, student);
     }

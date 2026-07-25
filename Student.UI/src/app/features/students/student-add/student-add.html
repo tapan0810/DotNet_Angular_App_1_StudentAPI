@@ -1,1 +1,120 @@
-<p>student-add works!</p>
+<mat-card>
+
+    <h2>Add Student</h2>
+
+    <form
+        [formGroup]="studentForm"
+        (ngSubmit)="saveStudent()">
+
+        <mat-form-field
+            appearance="outline"
+            class="full-width">
+
+            <mat-label>Name</mat-label>
+
+            <input
+                matInput
+                formControlName="name">
+
+            @if(studentForm.controls.name.hasError('required') &&
+            studentForm.controls.name.touched){
+
+            <mat-error>
+
+                Name is required
+
+            </mat-error>
+
+            }
+
+        </mat-form-field>
+
+        <mat-form-field
+            appearance="outline"
+            class="full-width">
+
+            <mat-label>Age</mat-label>
+
+            <input
+                type="number"
+                matInput
+                formControlName="age">
+
+            @if(studentForm.controls.age.hasError('required') &&
+            studentForm.controls.age.touched){
+
+            <mat-error>
+
+                Age is required
+
+            </mat-error>
+
+            }
+
+            @if(studentForm.controls.age.hasError('min')){
+
+            <mat-error>
+
+                Age must be greater than zero
+
+            </mat-error>
+
+            }
+
+        </mat-form-field>
+
+        <mat-form-field
+            appearance="outline"
+            class="full-width">
+
+            <mat-label>Email</mat-label>
+
+            <input
+                matInput
+                formControlName="email">
+
+            @if(studentForm.controls.email.hasError('required') &&
+            studentForm.controls.email.touched){
+
+            <mat-error>
+
+                Email is required
+
+            </mat-error>
+
+            }
+
+            @if(studentForm.controls.email.hasError('email')){
+
+            <mat-error>
+
+                Invalid email
+
+            </mat-error>
+
+            }
+
+        </mat-form-field>
+
+        <button
+            mat-raised-button
+            color="primary"
+            type="submit">
+
+            Save
+
+        </button>
+
+        <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="resetForm()">
+
+            Reset
+
+        </button>
+
+    </form>
+
+</mat-card>
