@@ -1,1 +1,152 @@
-<p>student-list works!</p>
+<h1>Students</h1>
+
+<mat-form-field appearance="outline" class="full-width">
+
+    <mat-label>Search</mat-label>
+
+    <input
+        matInput
+        (keyup)="search($event)"
+        placeholder="Search student">
+
+</mat-form-field>
+
+@if(loading){
+
+<p>Loading...</p>
+
+}
+
+@else{
+
+@if(dataSource.data.length===0){
+
+<h2>No Students Found</h2>
+
+}
+
+@else{
+
+<table
+mat-table
+[dataSource]="dataSource"
+matSort>
+
+    <ng-container matColumnDef="id">
+
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+            ID
+
+        </th>
+
+        <td mat-cell *matCellDef="let student">
+
+            {{student.id}}
+
+        </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+            Name
+
+        </th>
+
+        <td mat-cell *matCellDef="let student">
+
+            {{student.name}}
+
+        </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+
+        <th mat-header-cell *matHeaderCellDef>
+
+            Age
+
+        </th>
+
+        <td mat-cell *matCellDef="let student">
+
+            {{student.age}}
+
+        </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+
+        <th mat-header-cell *matHeaderCellDef>
+
+            Email
+
+        </th>
+
+        <td mat-cell *matCellDef="let student">
+
+            {{student.email}}
+
+        </td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+
+        <th mat-header-cell *matHeaderCellDef>
+
+            Actions
+
+        </th>
+
+        <td mat-cell *matCellDef="let student">
+
+            <button
+            mat-icon-button
+            color="primary"
+            [routerLink]="['/students',student.id]">
+
+                <mat-icon>
+
+                    visibility
+
+                </mat-icon>
+
+            </button>
+
+            <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteStudent(student.id)">
+
+                <mat-icon>
+
+                    delete
+
+                </mat-icon>
+
+            </button>
+
+        </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<mat-paginator
+[pageSize]="5">
+
+</mat-paginator>
+
+}
+
+}
