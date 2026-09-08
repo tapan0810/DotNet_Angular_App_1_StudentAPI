@@ -1,0 +1,15 @@
+name: Repository Quality
+on: [push, pull_request]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '9.0.x' }
+      - name: Build .NET projects
+        shell: bash
+        run: for project in $(find . -name '*.csproj' -not -path '*/obj/*' -not -path '*/bin/*'); do dotnet build "$project" -c Release; done
+      - name: Build Angular
+        working-directory: Student.UI
+        run: npm ci && npm run build
